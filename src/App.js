@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-// import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Teste from './components/Teste';
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import Home from './view/Home';
+import Login from './view/Login';
 
 function App() {
   return (
-    <Teste></Teste>
-    // <Router>
-    //   <Switch>
-    //     <Route exact path="/" component={Teste}/>
-    //   </Switch>
-    // </Router>
+    <Router>
+        <Routes>
+            <Route exact path='/' element={<Home/>} />
+            <Route path='/login' element={<Login/>} />
+        </Routes>
+      </Router>
+    
   );
 }
 

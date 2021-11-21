@@ -3,19 +3,19 @@ import axios from 'axios'
 
 export default function api() {
     const api = axios.create({
-        baseURL: 'http://localhost',
+        baseURL: 'http://localhost/teste/LLBackend/public',
         withCredentials: true
     })
 
-    api.interceptors.response.use(response => response, error => {
-        if (error.response.status === 401) {
-            console.log('LOGOUT')
+    // api.interceptors.response.use(response => response, error => {
+    //     if (error.response.status === 401) {
+    //         console.log('LOGOUT')
 
-            return Promise.reject()
-        }
+    //         return Promise.reject()
+    //     }
 
-        return Promise.reject(error)
-    })
+    //     return Promise.reject(error)
+    // })
 
     return api
 }
