@@ -1,0 +1,90 @@
+
+input[type=password]:focus{
+    outline: 2px solid #3EBDE4;
+    border: none;  
+}   
+input[type=text]:focus{
+    outline: 2px solid #3EBDE4;  
+    border: none;   
+}
+input[type=email]:focus{
+    outline: 2px solid #3EBDE4;     
+    border: none;
+}
+
+
+
+
+input[type=password]::-webkit-input-placeholder {
+    color: #9895b4;
+}
+input[type=text]::-webkit-input-placeholder {
+    color: #9895b4;
+}
+input[type=email]::-webkit-input-placeholder {
+    color: #9895b4;
+}
+ 
+input::-webkit-input-placeholder {
+    color: #9895b4;
+    position: absolute;
+    left: 25px;
+    top: 20px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #9895b4 !important;
+}
+
+
+#togglePassword{
+    margin-left: -30px; 
+    cursor: pointer;
+}
+
+/* -------------------------------------------------------------------- */
+
+
+/* 
+.card{
+    text-align: center;
+    padding-top: 10px;
+    opacity: 1;
+    width: 200px;
+    color: white;
+}
+
+.card-title{
+    color: #262626;
+    display: block;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0 !important;
+}
+
+.container{
+    margin-top: 100px;
+}
+img {
+    display:block;
+    margin:auto;
+}
+.slick-prev:before, .slick-next:before {
+    color: black !important;
+}
+
+
+.follow{
+    background-color: #3897f0 !important;
+    border: 1px solid #3897f0 !important;
+    border-radius: 4px;
+    color: #fff;
+    margin-top: 20px !important;
+} */

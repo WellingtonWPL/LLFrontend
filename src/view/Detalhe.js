@@ -1,37 +1,33 @@
 import React, {useState} from 'react'
 import { useNavigate }  from 'react-router-dom';
+import api from '../helpers/Api'
 import '../myStyles.css'
 
-export default function Login(props){
-   
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    
-    // function handleSubmit(){
-    //     const data = {
-    //         email: email,
-    //         senha: senha
-    //     }
 
-    //     api().get('/sanctum/csrf-cookie').then(() => {
-    //         api().post('/api/teste', data).then(response => {
-    //             if (response.data.error) {
-    //                 console.log(response.data.error)
-    //             } else {
-    //                 console.log('sucesso')
-    //                 return true;
-    //             }
-    //         })
-    //     })
-    // }
+export default function Detalhe(props){
+    const [img, setImg] = useState('');
     
-    const navigate = useNavigate();
-    function handleSubmit(){
-        props.login(email, senha);
-        navigate('/home')
-        
+    
+    function getDetalhes(id, tipo){
+        api().get('/api/getDetalhes/'+id+'/'+tipo).then(response => {
+            if (response.data.error) {
+                console.log(response.data.error)
+            } else {
+                setImg(response.data.return);
+                return true;
+            }
+        })
     }
-    
+
+    if(props.typeStream == 'MOVIE'){
+        getDetalhes(props.movieId, props.typeStream)
+    }
+    else if(props.typeStream == 'SERIE'){
+        getDetalhes(props.serieId, props.typeStream)
+    }
+
+    getDetalhes(props.movieId);
+
     const style = {
         cardStyle: {
             borderRadius: '10px',
@@ -66,6 +62,13 @@ export default function Login(props){
         fonteSpan : {
             fontFamily: '"inter"',
             fontWeight: '400',
+            color: '#9895b4'
+        },
+
+        fonteSpan2 : {
+            fontFamily: '"inter"',
+            fontWeight: '400',
+            fontSize: '12px',
             color: '#9895b4'
         },
 
@@ -108,18 +111,6 @@ export default function Login(props){
         },
     }
 
-
-    function showPassword() {
-        const password = document.querySelector('#id_password');
-        const icon = document.querySelector('#id_icon_pw');
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        icon.classList.toggle('fa-eye-slash');
-    }
-
-
-
-    
     return(
         <div>
             <div className="container" style={style.bodyStyle}>
@@ -129,20 +120,26 @@ export default function Login(props){
                             <div className="card-body">
                                 <form>
                                     <div className="mb-3" style={style.text}>
+                                        {/* <div className="form-group mb-3 col-md-8" style={style.colStyle}>
+                                            <h3 style={style.fonte}>Cadastre-se</h3>
+                                            <span style={style.fonteSpan}>Acompanhe os melhores filmes e séries.</span>
+                                        </div>
                                         <div className="form-group mb-3 col-md-8" style={style.colStyle}>
-                                            <h3 style={style.fonte}>Entrar</h3>
-                                            <span style={style.fonteSpan}>Bem vindo(a) de volta!</span>
+                                            <input type="text" name="nome" style={style.transparentInput} onChange={e => setNome(e.target.value)} value={nome} className="form-control" placeholder="Nome completo"></input>
                                         </div>
                                         <div className="form-group mb-3 col-md-8" style={style.colStyle}>
                                             <input type="email" name="email" style={style.transparentInput} onChange={e => setEmail(e.target.value)} value={email} className="form-control" placeholder="Email"></input>
                                         </div>
                                         <div className="form-group mb-3 col-md-8" style={style.colStyleSenha}>
                                             <input type="password" id="id_password" name="senha" style={style.transparentInput} onChange={e => setSenha(e.target.value)} value={senha} className="form-control" placeholder="Senha"></input>
-                                            <i id="id_icon_pw" onClick={showPassword} className="far fa-eye" style={style.styleIcon}></i>
+                                            <i id="id_icon_pw" className="far fa-eye" style={style.styleIcon}></i>
+                                        </div>
+                                        <div className="form-group mb-3 col-md-8" style={style.colStyle}>
+                                            <span style={style.fonteSpan2}>Ao clicar em <b>cadastrar</b>, você está aceitando os Termos e Condições e a Política de Privacidade da Laon.</span>
                                         </div>
                                         <div className="form-group mb-3 col-md-8"  style={style.colStyleButton}>
-                                            <button type="button" onClick={handleSubmit} style={style.buttonStyle} className="btn btn-end btn-block">Entrar</button>
-                                        </div>
+                                            <button type="button" onClick={handleSubmit} style={style.buttonStyle} className="btn btn-end btn-block">Cadastrar</button>
+                                        </div> */}
                                     </div>
                                 </form>
                             </div>

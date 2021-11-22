@@ -2,10 +2,12 @@ import React, {useState} from 'react'
 import { useNavigate }  from 'react-router-dom';
 import '../myStyles.css'
 
-export default function Login(props){
+export default function Cadastro(props){
    
+    const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    
     
     // function handleSubmit(){
     //     const data = {
@@ -27,9 +29,8 @@ export default function Login(props){
     
     const navigate = useNavigate();
     function handleSubmit(){
-        props.login(email, senha);
-        navigate('/home')
-        
+        props.cadastrar(nome, email, senha);
+        navigate('/login')
     }
     
     const style = {
@@ -66,6 +67,13 @@ export default function Login(props){
         fonteSpan : {
             fontFamily: '"inter"',
             fontWeight: '400',
+            color: '#9895b4'
+        },
+
+        fonteSpan2 : {
+            fontFamily: '"inter"',
+            fontWeight: '400',
+            fontSize: '12px',
             color: '#9895b4'
         },
 
@@ -130,8 +138,11 @@ export default function Login(props){
                                 <form>
                                     <div className="mb-3" style={style.text}>
                                         <div className="form-group mb-3 col-md-8" style={style.colStyle}>
-                                            <h3 style={style.fonte}>Entrar</h3>
-                                            <span style={style.fonteSpan}>Bem vindo(a) de volta!</span>
+                                            <h3 style={style.fonte}>Cadastre-se</h3>
+                                            <span style={style.fonteSpan}>Acompanhe os melhores filmes e séries.</span>
+                                        </div>
+                                        <div className="form-group mb-3 col-md-8" style={style.colStyle}>
+                                            <input type="text" name="nome" style={style.transparentInput} onChange={e => setNome(e.target.value)} value={nome} className="form-control" placeholder="Nome completo"></input>
                                         </div>
                                         <div className="form-group mb-3 col-md-8" style={style.colStyle}>
                                             <input type="email" name="email" style={style.transparentInput} onChange={e => setEmail(e.target.value)} value={email} className="form-control" placeholder="Email"></input>
@@ -140,8 +151,11 @@ export default function Login(props){
                                             <input type="password" id="id_password" name="senha" style={style.transparentInput} onChange={e => setSenha(e.target.value)} value={senha} className="form-control" placeholder="Senha"></input>
                                             <i id="id_icon_pw" onClick={showPassword} className="far fa-eye" style={style.styleIcon}></i>
                                         </div>
+                                        <div className="form-group mb-3 col-md-8" style={style.colStyle}>
+                                            <span style={style.fonteSpan2}>Ao clicar em <b>cadastrar</b>, você está aceitando os Termos e Condições e a Política de Privacidade da Laon.</span>
+                                        </div>
                                         <div className="form-group mb-3 col-md-8"  style={style.colStyleButton}>
-                                            <button type="button" onClick={handleSubmit} style={style.buttonStyle} className="btn btn-end btn-block">Entrar</button>
+                                            <button type="button" onClick={handleSubmit} style={style.buttonStyle} className="btn btn-end btn-block">Cadastrar</button>
                                         </div>
                                     </div>
                                 </form>
