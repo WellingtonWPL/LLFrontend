@@ -1,26 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate }  from 'react-router-dom';
 import api from '../helpers/Api';
+import config from '../config.json'
+import Footer from '../components/Footer';
 import '../myStyles.css'
 import "bootstrap/dist/css/bootstrap.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
-export default function Home(props){
-  const [suggestions, setSuggestions] = useState([]);
+export default function Home(){
 
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setSuggestions(data);
-      });
-  }, []);
-
-    const [movie, setMovie] = useState('');
     const [movies, setMovies] = useState([]);
-    const [serie, setSerie] = useState('');
     const [series, setSeries] = useState([]);
     const navigate = useNavigate();
 
@@ -66,14 +57,13 @@ export default function Home(props){
       })
     }
 
-    function selectMovie(){
-        props.movie(movie);
-        navigate('/detalhe')
+    function selectMovie(movie){
+        navigate('/detalhe', {state: {tipo: 'MOVIE', id:movie}})
     }
     
-    function selectSerie(){
-      props.serie(serie);
-      navigate('/detalhe')
+    function selectSerie(serie){
+        navigate('/detalhe', {state: {tipo: 'SERIE', id:serie}})
+        
     }
 
     useEffect(()=>{
@@ -93,12 +83,6 @@ export default function Home(props){
             fontWeight: '600',
             color: 'white',
         },
-        
-        fonteSpan : {
-            fontFamily: '"inter"',
-            fontWeight: '400',
-            color: '#9895b4'
-        },
 
         fonteSpan2 : {
             fontFamily: '"inter"',
@@ -107,43 +91,18 @@ export default function Home(props){
             color: '#9895b4'
         },
 
-        transparentInput : {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            border: '0.1px solid #9895b4',
-            minHeight: '70px',
-            color: '#9895b4',
-            boxSizing: 'border-box',
-            paddingLeft: '25px'
-        },
-
-        text : {
-            marginTop: '10%',
-            marginBottom: '10%'
-        },
-
-        colStyleButton : {
-            paddingBottom: '5%',
-            paddingTop: '1rem',
-            margin: 'auto',
-            display: 'flex'
-        },
-
         colStyle : {
-        //    marginTop: '20px'
            paddingTop:'30px'
-        },
-
-        styleIcon : {
-            marginLeft: '-50px', 
-            marginTop: '25px',
-            cursor: 'pointer',
-            color: '#9895b4'
         },
 
         rowStyle : {
             marginTop: '-23vh',
-            heigth: '10%',
+            height: '10%',
             maxWidth: '100%'
+        },
+
+        img : {
+            cursor: 'pointer'
         },
     }
     
@@ -167,13 +126,12 @@ export default function Home(props){
                         ) : (
                             <Slider {...settings}>
                                 {movies.map((current) => (
-                                    <div className="out" key={current.id}>
-                                        <img
-                                            className="rounded-circles"
-                                            alt={"users here"}
-                                            src={`http://localhost/teste/LLBackend/storage/app/movies/movie-${current.id}.png`}
-                                            
-                                        />
+                                    <div className="out" key={current.id} >
+                                        <span onClick={e => selectMovie(current.id)}>
+                                            <img style={style.img}
+                                                src={config.SERVER_URL+`/storage/app/movies/movie-${current.id}.png`}
+                                            />
+                                        </span>
                                     </div>
                                 ))}
                             </Slider>
@@ -191,16 +149,12 @@ export default function Home(props){
                             <Slider {...settings}>
                                 {series.map((current) => (
                                     <div className="out" key={current.id}>
-                                        <img
-                                            className="rounded-circles"
-                                            alt={"users here"}
-                                            src={`http://localhost/teste/LLBackend/storage/app/series/serie-${current.id}.png`}
-                                            
-                                        />
-                                        
-                                        
-                                       
-                                        
+                                         <span onClick={e => selectSerie(current.id)}>
+                                            <img
+                                                src={config.SERVER_URL+`/storage/app/series/serie-${current.id}.png`}
+                                                
+                                            />
+                                        </span>
                                     </div>
                                 ))}
                             </Slider>
@@ -208,6 +162,7 @@ export default function Home(props){
                     </div>
                 </div> 
             </div>
+            <Footer></Footer>
         </div>
         
     );

@@ -1,9 +1,10 @@
 import axios from 'axios'
+import config from '../config.json'
 //import {logOut} from '@/util/auth'
 
 export default function api() {
     const api = axios.create({
-        baseURL: 'http://localhost/teste/LLBackend/public',
+        baseURL: config.SERVER_URL+'/public',
         withCredentials: true
     })
 

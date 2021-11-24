@@ -9,11 +9,12 @@ import Login from './view/Login';
 import Cadastro from './view/Cadastro';
 import Detalhe from './view/Detalhe';
 
+
 function App() {
 
     const [authUser, setAuth] = useState(false);
-    const [movieId, setMovieId] = useState('');
-    const [serieId, setSerieId] = useState('');
+    const [movie, setMovie] = useState('');
+    const [serie, setSerie] = useState('');
     const [typeStream, setTypeStream] = useState('');
     
 
@@ -61,27 +62,15 @@ function App() {
       setAuth(false);
     }
 
-    function selecionaFilme(id){
-      setMovieId(id);
-      setTypeStream('MOVIE');
-    }
-
-    function selecionaSerie(id){
-      setSerieId(id);
-      setTypeStream('SERIE');
-    }
-
-
-
 
   return (
     <BrowserRouter>
       <Header authUser={authUser} logout={logout} authUser={authUser}/>
       <Routes>
-          <Route exact path='/home' element={<Home movie={selecionaFilme} serie={selecionaSerie}/>} />
+          <Route exact path='/home' element={<Home/>} />
           <Route path='/login' element={<Login login={login}/>} />
           <Route path='/cadastro' element={<Cadastro cadastrar={cadastrar}/>} />
-          <Route path='/detalhe' element={<Detalhe movieId={movieId} serieId={serieId} type={typeStream} />} />
+          <Route path='/detalhe' element={<Detalhe/>} />
       </Routes>
     </BrowserRouter>
     
