@@ -46,6 +46,6 @@ Este repositório representa a parte visual da aplicação, nele todos os elemen
 Após instalação, basta alterar o campo <code>SERVER_URL</code> presente no arquivo config.json na pasta src, para o endereço onde está instalado o Laravel o caminho default para o XAMPP é : 
 <code>http://localhost/"diretorio_do_projeto"/"diretorio_do_laravel"</code>, não é necessário inpormar as pastas public e api. Após isso executar o seguinte comando: <code>npm run start</code> e pronto a aplicação estará pronta para rodar.
 
-##AUTOR
+## AUTOR
 
 Wellington Patrick de Lima
