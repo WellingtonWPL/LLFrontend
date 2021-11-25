@@ -44,4 +44,8 @@ Primeiramente lembre-se que este repositório apenas funcionará devidamente ap�
 "https://github.com/WellingtonWPL/LLBackend"
 Este repositório representa a parte visual da aplicação, nele todos os elementos e funcionalidades visuais, estilos e requisições estão presentes. Para configurar o ambiente é necessário primeiramente realizar a instalação das dependências com o comando <code>yarn</code> ou <code>yarn install</code>
 Após instalação, basta alterar o campo <code>SERVER_URL</code> presente no arquivo config.json na pasta src, para o endereço onde está instalado o Laravel o caminho default para o XAMPP é : 
-<code>http://localhost/"diretorio_do_projeto"/"diretorio_do_laravel"</code>, não é necessário inpormar as pastas public e api. Após isso executar o seguinte comando: <code>npm run start</code> e pronto a aplicação estará pronta para rodar, 
+<code>http://localhost/"diretorio_do_projeto"/"diretorio_do_laravel"</code>, não é necessário inpormar as pastas public e api. Após isso executar o seguinte comando: <code>npm run start</code> e pronto a aplicação estará pronta para rodar.
+
+##AUTOR
+
+Wellington Patrick de Lima
