@@ -1,60 +1,120 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import { useNavigate }  from 'react-router-dom';
 import api from '../helpers/Api';
 import config from '../config.json'
 import Footer from '../components/Footer';
 import '../myStyles.css'
-import "bootstrap/dist/css/bootstrap.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Swal from 'sweetalert2/src/sweetalert2'
+
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+// import "bootstrap/dist/css/bootstrap.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
-export default function Home(){
-
+export default function Home(props){
+    
     const [movies, setMovies] = useState([]);
     const [series, setSeries] = useState([]);
     const navigate = useNavigate();
+    const tokenString = sessionStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
 
-    const settings = {
-        infinite: true,
-        speed: 500,
-        arrows: true,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 960,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 2,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 2,
-                },
-            },
-        ],
-    }
+    const responsive = {
+        superLargeDesktop: {
+          // the naming can be any, depends on you.
+          breakpoint: { max: 4000, min: 3000 },
+          items: 5
+        },
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 2
+        },
+        mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 1
+        }
+    };
+
+    const renderMovies = useMemo(()=>(
+        <div className="container">
+            <h6 className="text-muted" style={style.fonteSpan2}>FILMES</h6>
+            {movies.length === 0 ? (
+                <div>
+                    <span style={style.fonteSpan2}>Nenhum resultado encontrado</span>
+                </div>
+            ) : (
+                <Carousel responsive={responsive} infinite={true}>
+                    {movies.map((current) => (
+                        <div className="out" key={current.id} >
+                            <span onClick={e => selectMovie(current.id)}>
+                                <img style={style.img}
+                                    src={config.SERVER_URL+`/storage/app/movies/movie-${current.id}.png`}
+                                />
+                            </span>
+                        </div>
+                    ))}
+                </Carousel>
+            )}
+        </div>
+    ), [movies])
+
+    const renderSeries = useMemo(()=>(
+        <div className="container">
+            <h6 className="text-muted" style={style.fonteSpan2}>SÉRIES</h6>
+            {series.length === 0 ? (
+                <div>
+                    <span style={style.fonteSpan2}>Nenhum resultado encontrado</span>
+                </div>
+            ) : (
+                <Carousel responsive={responsive} infinite={true}>
+                    {series.map((current) => (
+                        <div className="out" key={current.id}>
+                                <span onClick={e => selectSerie(current.id)}>
+                                <img style={style.img}
+                                    src={config.SERVER_URL+`/storage/app/series/serie-${current.id}.png`}
+                                    
+                                />
+                            </span>
+                        </div>
+                    ))}
+                </Carousel>
+            )}
+        </div>
+    ), [series])
+
 
     function getMovies(){
-      api().get('/api/getMovies').then(response => {
-        setMovies(response.data.return);
-      },
-      response => {
-        alert('Não foi possível solicitar os dados!');
-      })
+        let config = {
+            headers: {'Authorization': 'Bearer '+ userToken}
+        };
+        api().get('/api/getMovies', config).then(response => {
+            setMovies(response.data.return);
+        },
+        response => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Acesso negado!'
+            })
+            navigate('/login')
+        })
     }
 
     function getSeries(){
-      api().get('/api/getSeries').then(response => {
-        setSeries(response.data.return);
-      },
-      response => {
-        alert('Não foi possível solicitar os dados!');
-      })
+        let config = {
+            headers: {'Authorization': 'Bearer '+ userToken}
+        };
+        api().get('/api/getSeries', config).then(response => {
+            setSeries(response.data.return);
+        },
+        response => {
+            navigate('/login')
+        })
     }
 
     function selectMovie(movie){
@@ -67,44 +127,17 @@ export default function Home(){
     }
 
     useEffect(()=>{
-      getMovies();
-      getSeries();
+        setSeries(props.series);
+        setMovies(props.movies);
+    },[props.series, props.movies])
+
+    useEffect(()=>{
+        getMovies();
+        getSeries();
     },[])
     
 
-    const style = {
-        bodyStyle : {
-          backgroundColor: '#282639',
-          height: '30vh',
-        },
-
-        fonte : {
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            color: 'white',
-        },
-
-        fonteSpan2 : {
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            fontSize: '15px',
-            color: '#9895b4'
-        },
-
-        colStyle : {
-           paddingTop:'30px'
-        },
-
-        rowStyle : {
-            marginTop: '-23vh',
-            height: '10%',
-            maxWidth: '100%'
-        },
-
-        img : {
-            cursor: 'pointer'
-        },
-    }
+    
     
     return(
         <div>
@@ -117,49 +150,10 @@ export default function Home(){
                     </div>
                 </div>
                 <div className="col-md-12" style={style.colStyle}>
-                    <div className="container">
-                        <h6 className="text-muted" style={style.fonteSpan2}>FILMES</h6>
-                        {movies.length === 0 ? (
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        ) : (
-                            <Slider {...settings}>
-                                {movies.map((current) => (
-                                    <div className="out" key={current.id} >
-                                        <span onClick={e => selectMovie(current.id)}>
-                                            <img style={style.img}
-                                                src={config.SERVER_URL+`/storage/app/movies/movie-${current.id}.png`}
-                                            />
-                                        </span>
-                                    </div>
-                                ))}
-                            </Slider>
-                        )}
-                    </div>
+                    {renderMovies}
                 </div>
                 <div className="col-md-12" style={style.colStyle} >
-                    <div className="container">
-                        <h6 className="text-muted" style={style.fonteSpan2}>SÉRIES</h6>
-                        {series.length === 0 ? (
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>
-                        ) : (
-                            <Slider {...settings}>
-                                {series.map((current) => (
-                                    <div className="out" key={current.id}>
-                                         <span onClick={e => selectSerie(current.id)}>
-                                            <img
-                                                src={config.SERVER_URL+`/storage/app/series/serie-${current.id}.png`}
-                                                
-                                            />
-                                        </span>
-                                    </div>
-                                ))}
-                            </Slider>
-                        )}
-                    </div>
+                    {renderSeries}
                 </div> 
             </div>
             <Footer></Footer>
@@ -169,4 +163,47 @@ export default function Home(){
     
 }
 
+const style = {
+    bodyStyle : {
+      backgroundColor: '#282639',
+      height: '30vh',
+    },
 
+    fonte : {
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        color: 'white',
+    },
+
+    fonteSpan2 : {
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        fontSize: '15px',
+        color: '#9895b4'
+    },
+
+    colStyle : {
+       paddingTop:'30px'
+    },
+
+    rowStyle : {
+        marginTop: '-23vh',
+        height: '10%',
+        maxWidth: '100%'
+    },
+
+    img : {
+        cursor: 'pointer'
+    },
+
+    btnBackStyle : {
+        color: 'white',
+        borderRadius: '50%',
+        borderWidth: '0.02px',
+        borderStyle: 'solid',
+        borderColor: 'white',
+        height: '40px',
+        width: '40px' , 
+        fontSize: '12px',
+    }
+}

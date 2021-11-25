@@ -1,121 +1,44 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate }  from 'react-router-dom';
 import '../myStyles.css'
+import api from '../helpers/Api'
+import Swal from 'sweetalert2/src/sweetalert2'
 
-export default function Cadastro(props){
+
+export default function Cadastro(){
    
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    
-    
-    // function handleSubmit(){
-    //     const data = {
-    //         email: email,
-    //         senha: senha
-    //     }
-
-    //     api().get('/sanctum/csrf-cookie').then(() => {
-    //         api().post('/api/teste', data).then(response => {
-    //             if (response.data.error) {
-    //                 console.log(response.data.error)
-    //             } else {
-    //                 console.log('sucesso')
-    //                 return true;
-    //             }
-    //         })
-    //     })
-    // }
-    
+    const tokenString = sessionStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
     const navigate = useNavigate();
-    function handleSubmit(){
-        props.cadastrar(nome, email, senha);
-        navigate('/login')
-    }
     
-    const style = {
-        cardStyle: {
-            borderRadius: '10px',
-            backgroundColor: '#282639'
-        },
+    function handleSubmit(){
+        const data = {
+            name: nome,
+            email: email,
+            password: senha
+        }
 
-        h2Style : {
-            fontFamily: '"Copperplate", Fantasy',
-            color: 'yellow'
-        },
-
-        bodyStyle : {
-            margin: '0 auto',
-            marginTop: '5%'
-        },
-
-        colStyle : {
-            margin: 'auto'
-        },
-
-        colStyleSenha : {
-            margin: 'auto',
-            display: 'flex'
-        },
-
-        fonte : {
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            color: 'white'
-        },
+        api().post('/api/register', data).then(response => {
+                navigate('/login');
+        }, respnse =>{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Email já existe ou o cadastro é inválido'
+            })
+        })
         
-        fonteSpan : {
-            fontFamily: '"inter"',
-            fontWeight: '400',
-            color: '#9895b4'
-        },
+    }   
 
-        fonteSpan2 : {
-            fontFamily: '"inter"',
-            fontWeight: '400',
-            fontSize: '12px',
-            color: '#9895b4'
-        },
-
-        transparentInput : {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            border: '0.1px solid #9895b4',
-            minHeight: '70px',
-            color: '#9895b4',
-            boxSizing: 'border-box',
-            paddingLeft: '25px'
-        },
-
-        text : {
-            marginTop: '10%',
-            marginBottom: '10%'
-        },
-
-        colStyleButton : {
-            paddingBottom: '5%',
-            paddingTop: '1rem',
-            margin: 'auto',
-            display: 'flex'
-        },
-
-        buttonStyle : {
-            width:'100%',
-            display:'block',
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            color: 'black',
-            backgroundColor: 'white',
-            minHeight: '70px',
-        },
-
-        styleIcon : {
-            marginLeft: '-50px', 
-            marginTop: '25px',
-            cursor: 'pointer',
-            color: '#9895b4'
-        },
-    }
-
+    useEffect(()=>{
+        if(userToken){
+            navigate('/home');
+        }
+    },[])
+    
+    
 
     function showPassword() {
         const password = document.querySelector('#id_password');
@@ -124,9 +47,6 @@ export default function Cadastro(props){
         password.setAttribute('type', type);
         icon.classList.toggle('fa-eye-slash');
     }
-
-
-
     
     return(
         <div>
@@ -169,4 +89,87 @@ export default function Cadastro(props){
     
 }
 
+
+const style = {
+    cardStyle: {
+        borderRadius: '10px',
+        backgroundColor: '#282639'
+    },
+
+    h2Style : {
+        fontFamily: '"Copperplate", Fantasy',
+        color: 'yellow'
+    },
+
+    bodyStyle : {
+        margin: '0 auto',
+        marginTop: '5%'
+    },
+
+    colStyle : {
+        margin: 'auto'
+    },
+
+    colStyleSenha : {
+        margin: 'auto',
+        display: 'flex'
+    },
+
+    fonte : {
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        color: 'white'
+    },
+    
+    fonteSpan : {
+        fontFamily: '"inter"',
+        fontWeight: '400',
+        color: '#9895b4'
+    },
+
+    fonteSpan2 : {
+        fontFamily: '"inter"',
+        fontWeight: '400',
+        fontSize: '12px',
+        color: '#9895b4'
+    },
+
+    transparentInput : {
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        border: '0.1px solid #9895b4',
+        minHeight: '70px',
+        color: '#9895b4',
+        boxSizing: 'border-box',
+        paddingLeft: '25px'
+    },
+
+    text : {
+        marginTop: '10%',
+        marginBottom: '10%'
+    },
+
+    colStyleButton : {
+        paddingBottom: '5%',
+        paddingTop: '1rem',
+        margin: 'auto',
+        display: 'flex'
+    },
+
+    buttonStyle : {
+        width:'100%',
+        display:'block',
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        color: 'black',
+        backgroundColor: 'white',
+        minHeight: '70px',
+    },
+
+    styleIcon : {
+        marginLeft: '-50px', 
+        marginTop: '25px',
+        cursor: 'pointer',
+        color: '#9895b4'
+    },
+}
 

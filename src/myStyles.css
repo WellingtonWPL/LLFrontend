@@ -40,6 +40,12 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: #9895b4 !important;
 }
 
+[placeholder]:focus::-webkit-input-placeholder {
+    transition: text-indent 0.4s 0.4s ease; 
+    text-indent: -100%;
+    opacity: 1;
+ }
+
 
 #togglePassword{
     margin-left: -30px; 

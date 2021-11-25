@@ -3,111 +3,55 @@ import { useNavigate, useLocation, Link }  from 'react-router-dom';
 import api from '../helpers/Api';
 import config from '../config.json'
 import Footer from '../components/Footer';
+import Swal from 'sweetalert2/src/sweetalert2'
 
 
 export default function Detalhe(){
     const [item, setItem] = useState({});
-    const {state} = useLocation();
-    const { tipo, id } = state; // Read values passed on state
-    const caminho = state.tipo == 'MOVIE' ? '/storage/app/movies/movie' : '/storage/app/series/serie';
-    
+    const tokenString = sessionStorage.getItem('token');
+    const userToken = JSON.parse(tokenString);
+    const navigate = useNavigate();
     
     useEffect(()=>{
-        
-        if(state){
-            api().get('/api/getDetalhes/'+ state.tipo  +'/'+ state.id).then(response => {
-                    let data = response.data.return;
-                    data.categorias = data.categorias.split(',');
-                    setItem(data);
-                },
-                response => {
-                    alert('Não foi possível solicitar os dados!');
+        if(userToken){
+            if(state){
+                let config = {
+                    headers: {'Authorization': 'Bearer '+ userToken}
+                };
+                api().get('/api/getDetalhes/'+ state.tipo  +'/'+ state.id, config).then(response => {
+                        let data = response.data.return;
+                        data.categorias = data.categorias.split(',');
+                        setItem(data);
+                    },
+                    response => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Não foi possível solicitar os dados!'
+                        })
+                       
+                    })
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ocorreu um erro inesperado!'
                 })
-        }else{
-            alert('Ocorreu um erro inesperado!');
+            }
         }
-      },[])
-
-    const style = {
-        bodyStyle : {
-          backgroundColor: '#282639',
-          height: '30vh',
-        },
-
-        fonte : {
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            color: 'white',
-        },
-
-        fonteSpan2 : {
-            fontFamily: '"inter"',
-            fontWeight: '400',
-            fontSize: '15px',
-            color: '#9895b4'
-
-        },
-
-        buttonStyle : {
-            width:'240px',
-            display:'block',
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            color: 'black',
-            backgroundColor: 'white',
-            minHeight: '70px',
-        },
-
-        colStyleButton : {
-            paddingBottom: '5%',
-            paddingTop: '1rem',
-            margin: 'auto',
-            display: 'flex',
-            justifyContent: 'center'
-        },
-
-        colStyle : {
-           paddingTop:'30px'
-        },
-
-        rowStyle : {
-            marginTop: '-23vh',
-            maxWidth: '100%',
-            position: 'absolute'
-        },
-        
-        img : {
-            height: '350px'
-        },
-
-        titulos:{
-            paddingBottom: '5px',
-            borderBottom: '0.1px solid #3e3c50',
-            fontFamily: '"inter"',
-            fontWeight: '600',
-            fontSize: '15px',
-            color: 'white'
-        },
-
-        categorias:{
-            border: '0.1px solid #3e3c50',
-            WebkitBorderRadius: '500px',
-            fontFamily: '"inter"',
-            fontWeight: '400',
-            fontSize: '15px',
-            color: '#9895b4',
-            marginLeft: '5%',
-            textAlign: 'center'
-        },
-
-        rowS:{
-            position: 'inherit'
-        },
-
-        footer:{
-            position:"fixed"
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Acesso negado!'
+            })
+            navigate('/login')
         }
         
+    },[])
+
+    const {state} = useLocation();
+    let caminho = null;
+    if(userToken){
+        const { tipo, id } = state; // Read values passed on state
+        caminho = state.tipo == 'MOVIE' ? '/storage/app/movies/movie' : '/storage/app/series/serie';
     }
 
     return(
@@ -243,4 +187,85 @@ export default function Detalhe(){
     
 }
 
+const style = {
+    bodyStyle : {
+      backgroundColor: '#282639',
+      height: '30vh',
+    },
+
+    fonte : {
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        color: 'white',
+    },
+
+    fonteSpan2 : {
+        fontFamily: '"inter"',
+        fontWeight: '400',
+        fontSize: '15px',
+        color: '#9895b4'
+
+    },
+
+    buttonStyle : {
+        width:'240px',
+        display:'block',
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        color: 'black',
+        backgroundColor: 'white',
+        minHeight: '70px',
+    },
+
+    colStyleButton : {
+        paddingBottom: '5%',
+        paddingTop: '1rem',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+
+    colStyle : {
+       paddingTop:'30px'
+    },
+
+    rowStyle : {
+        marginTop: '-23vh',
+        maxWidth: '100%',
+        position: 'absolute'
+    },
+    
+    img : {
+        height: '350px'
+    },
+
+    titulos:{
+        paddingBottom: '5px',
+        borderBottom: '0.1px solid #3e3c50',
+        fontFamily: '"inter"',
+        fontWeight: '600',
+        fontSize: '15px',
+        color: 'white'
+    },
+
+    categorias:{
+        border: '0.1px solid #3e3c50',
+        WebkitBorderRadius: '500px',
+        fontFamily: '"inter"',
+        fontWeight: '400',
+        fontSize: '15px',
+        color: '#9895b4',
+        marginLeft: '5%',
+        textAlign: 'center'
+    },
+
+    rowS:{
+        position: 'inherit'
+    },
+
+    footer:{
+        position:"fixed"
+    }
+    
+}
 

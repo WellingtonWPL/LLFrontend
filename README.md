@@ -39,32 +39,9 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Instalação
+Primeiramente lembre-se que este repositório apenas funcionará devidamente após configuração do backend, repositório LARAVEL, conforme o endereço:
+<a href="https://github.com/WellingtonWPL/LLBackend"/>
+Este repositório representa a parte visual da aplicação, nele todos os elementos e funcionalidades visuais, estilos e requisições estão presentes. Para configurar o ambiente é necessário primeiramente realizar a instalação das dependências com o comando <code>yarn</code> ou <code>yarn install</code>
+Após instalação, basta alterar o campo <code>SERVER_URL</code> presente no arquivo config.json na pasta src, para o endereço onde está instalado o Laravel o caminho default para o XAMPP é : 
+<code>http://localhost/"diretorio_do_projeto"/"diretorio_do_laravel"</code>, não é necessário inpormar as pastas public e api. Após isso executar o seguinte comando: <code>npm run start</code> e pronto a aplicação estará pronta para rodar, 
